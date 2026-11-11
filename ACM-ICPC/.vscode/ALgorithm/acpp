@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+
+class node {
+public:
+    int data;
+    node* next;
+};
+
+class list {
+public:
+    node* head;   // 哨兵头结点
+    int size;
+};
+
+list* list_init() {
+    list* L = new list;
+    L->size = 0;
+    L->head = new node;      // 哨兵不存数据
+    L->head->next = nullptr; // 空链表：头结点后面没有节点
+    return L;
+}
