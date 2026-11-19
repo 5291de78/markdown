@@ -1,0 +1,5 @@
+C:/Users/wangq/PycharmProjects/YulinSec--WriteUp--2026/markdown/c++/Qt-GUI/grade_demo/build/CMakeFiles/grade_demo.dir
+C:/Users/wangq/PycharmProjects/YulinSec--WriteUp--2026/markdown/c++/Qt-GUI/grade_demo/build/CMakeFiles/edit_cache.dir
+C:/Users/wangq/PycharmProjects/YulinSec--WriteUp--2026/markdown/c++/Qt-GUI/grade_demo/build/CMakeFiles/rebuild_cache.dir
+C:/Users/wangq/PycharmProjects/YulinSec--WriteUp--2026/markdown/c++/Qt-GUI/grade_demo/build/CMakeFiles/grade_demo_autogen_timestamp_deps.dir
+C:/Users/wangq/PycharmProjects/YulinSec--WriteUp--2026/markdown/c++/Qt-GUI/grade_demo/build/CMakeFiles/grade_demo_autogen.dir

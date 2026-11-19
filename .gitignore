@@ -1,3 +1,13 @@
 ﻿.venv/
 __pycache__/
 *.pyc
+*.rar
+*.zip
+*.7z
+*.iso
+*.exe
+*.apk
+*.pdf
+*.whl
+*.msi
+*.tar.gz

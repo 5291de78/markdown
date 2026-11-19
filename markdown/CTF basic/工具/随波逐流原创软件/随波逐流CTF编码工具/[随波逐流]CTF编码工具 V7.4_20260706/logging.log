@@ -1,0 +1,14 @@
+2026-11-15 17:18:20,086 - root - INFO - 程序启动...
+2026-11-15 17:18:20,086 - root - INFO - 软件名称：[随波逐流]CTF编码工具-V7.4 20260706
+2026-11-15 17:18:22,259 - root - INFO - 0、所有库加载完成
+2026-11-15 17:18:23,413 - root - INFO - 本地模块加载完成
+2026-11-15 17:18:23,413 - root - INFO - ✅ 程序初始化全部完成
+2026-11-15 17:18:23,416 - root - INFO - rescode请求结束
+2026-11-15 17:18:23,580 - root - INFO - ......tk程序启动开始......
+2026-11-15 17:18:23,795 - root - INFO - rescode:1
+2026-11-15 17:18:24,205 - matplotlib.font_manager - INFO - font search path ['C:\\Users\\wangq\\AppData\\Local\\Temp\\_MEI2672442\\mpl-data\\fonts\\ttf', 'C:\\Users\\wangq\\AppData\\Local\\Temp\\_MEI2672442\\mpl-data\\fonts\\afm', 'C:\\Users\\wangq\\AppData\\Local\\Temp\\_MEI2672442\\mpl-data\\fonts\\pdfcorefonts']
+2026-11-15 17:18:24,601 - matplotlib.font_manager - INFO - Could not open font file C:\WINDOWS\Fonts\mstmc.ttf
+2026-11-15 17:18:25,073 - matplotlib.font_manager - INFO - generated new fontManager
+2026-11-15 17:18:25,209 - scapy.runtime - WARNING - No libpcap provider available ! pcap won't be used
+2026-11-15 17:18:25,340 - root - INFO - 总数：472    ↑搜索↑
+2026-11-15 17:18:25,352 - root - INFO - ......tk程序启动结束......

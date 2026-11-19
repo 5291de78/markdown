@@ -612,6 +612,23 @@ Items.empty();
 Items.capacity();
 Items.resize(n);
 Items.reverse(n)
+    
+//初始化办法
+vector<int> v(10);  //10个0
+vector<string> strs(5); //5个null str
+
+vector<int> v(10, 666);       // 10 个 int 元素，每个值都是 666
+vector<string> strs(3, "hi"); // 3 个字符串，每个都是 "hi"
+
+//拷贝与移动初始化
+vector<int> v1 = {1, 2, 3};
+vector<int> v2(v1);       // 方式1：拷贝构造
+vector<int> v3 = v1;      // 方式2：拷贝赋值
+
+vector<int> v1 = {1, 2, 3};
+vector<int> v2(std::move(v1)); // 移动构造
+// 执行后 v1 变为空 vector，数据全部转移到 v2
+
 ```
 
 vector没有length()成员函数！！！！！

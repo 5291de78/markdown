@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Crypto--2026--writeup.iml" filepath="$PROJECT_DIR$/.idea/Crypto--2026--writeup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pwntools.iml" filepath="$PROJECT_DIR$/.idea/pwntools.iml" />
     </modules>
   </component>
 </project>

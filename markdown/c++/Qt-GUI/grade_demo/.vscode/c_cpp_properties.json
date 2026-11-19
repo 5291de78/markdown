@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "Qt6 (MSYS2 UCRT64)",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/msys64/ucrt64/include",
+                "C:/msys64/ucrt64/include/qt6",
+                "C:/msys64/ucrt64/include/qt6/QtCore",
+                "C:/msys64/ucrt64/include/qt6/QtGui",
+                "C:/msys64/ucrt64/include/qt6/QtWidgets"
+            ],
+            "compilerPath": "C:/msys64/ucrt64/bin/g++.exe",
+            "intelliSenseMode": "windows-gcc-x64",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

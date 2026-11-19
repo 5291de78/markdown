@@ -1,0 +1,205 @@
+
+<style>
+:root {
+  color-scheme: light;
+  --surface: #F7F7F8;
+  --surface-muted: #EFEFF2;
+  --text: #171717;
+  --text-muted: #52525B;
+  --border: rgba(23, 23, 23, 0.12);
+  --brand: #4B3FE3;
+  --brand-soft: #F2F7FF;
+  --brand-soft-strong: #E5EAFF;
+  --brand-text: #1A1759;
+  --brand-on: #FFFFFF;
+  --accent: #27D2BF;
+  --accent-soft: #EAFBF8;
+  --accent-text: #0F766E;
+  --chart-series-1: #3C2ECA;
+  --chart-series-2: #A9AEFF;
+  --chart-series-3: #6F6FFF;
+  --chart-series-4: #22A5F7;
+  --radius: 8px;
+  --radius-card: 12px;
+  --spacer-4: 4px;
+  --spacer-8: 8px;
+  --spacer-12: 12px;
+  --spacer-16: 16px;
+  --spacer-20: 20px;
+  --spacer-24: 24px;
+  --font-sans: "SF Pro Text", "PingFang SC", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-strong: 600;
+  --text-caption: 12px/18px;
+  --text-body: 14px/20px;
+  --text-title: 16px/24px;
+  --text-code: 13px/20px;
+}
+:root[data-widget-theme="dark"] {
+  color-scheme: dark;
+  --surface: #171717;
+  --surface-muted: #262626;
+  --text: #E5E5E5;
+  --text-muted: #A1A1AA;
+  --border: rgba(229, 229, 229, 0.12);
+  --brand: #6054F1;
+  --brand-soft: #1A1759;
+  --brand-soft-strong: #3C2ECA;
+  --brand-text: #CFD8FF;
+  --accent-soft: #123F3C;
+  --accent-text: #CCFBF1;
+}
+.asm-widget {
+  color: var(--text);
+  background: transparent;
+  font: var(--weight-regular) var(--text-body) var(--font-sans);
+  padding: var(--spacer-16) var(--spacer-20);
+}
+</style>
+
+<div class="asm-widget" data-dynamic-ui-widget data-template="explanation-panel" data-mounted="true">
+<svg viewBox="0 0 720 640" width="100%" height="auto" style="display:block;">
+  <defs>
+    <marker id="ar-brand" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M1 1 L7 4 L1 7 Z" fill="var(--brand)"/>
+    </marker>
+    <marker id="ar-muted" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M1 1 L7 4 L1 7 Z" fill="var(--text-muted)"/>
+    </marker>
+    <marker id="ar-accent" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M1 1 L7 4 L1 7 Z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="360" y="24" style="font: var(--weight-strong) 16px var(--font-sans);" fill="var(--text)" text-anchor="middle">ISA · 指令集 · 汇编风格 · 汇编器 · 机器码 关系图</text>
+
+  <!-- Level 1: ISA / Architecture -->
+  <rect x="40" y="44" width="640" height="72" rx="8" fill="var(--surface)" stroke="var(--brand)" stroke-width="2"/>
+  <text x="56" y="62" style="font: var(--weight-strong) 13px var(--font-sans);" fill="var(--brand-text)">层 1 · 指令集架构 (ISA / Architecture)</text>
+  <text x="56" y="78" style="font: 11px var(--font-sans);" fill="var(--text-muted)">CPU 能理解的全部指令的"契约"，定义了寄存器、指令格式、寻址方式</text>
+
+  <!-- ISA boxes -->
+  <rect x="60" y="86" width="130" height="22" rx="4" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1"/>
+  <text x="125" y="101" style="font: var(--weight-medium) 11px var(--font-sans);" fill="var(--brand-text)" text-anchor="middle">x86 / x86-64</text>
+
+  <rect x="200" y="86" width="100" height="22" rx="4" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1"/>
+  <text x="250" y="101" style="font: var(--weight-medium) 11px var(--font-sans);" fill="var(--brand-text)" text-anchor="middle">ARM / AArch64</text>
+
+  <rect x="310" y="86" width="100" height="22" rx="4" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1"/>
+  <text x="360" y="101" style="font: var(--weight-medium) 11px var(--font-sans);" fill="var(--brand-text)" text-anchor="middle">RISC-V</text>
+
+  <rect x="420" y="86" width="90" height="22" rx="4" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1"/>
+  <text x="465" y="101" style="font: var(--weight-medium) 11px var(--font-sans);" fill="var(--brand-text)" text-anchor="middle">MIPS</text>
+
+  <rect x="520" y="86" width="140" height="22" rx="4" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1"/>
+  <text x="590" y="101" style="font: var(--weight-medium) 11px var(--font-sans);" fill="var(--brand-text)" text-anchor="middle">PowerPC / LoongArch</text>
+
+  <!-- Arrow down -->
+  <path d="M 360 118 L 360 130" stroke="var(--brand)" stroke-width="2" fill="none" stroke-linecap="round" marker-end="url(#ar-brand)"/>
+  <text x="375" y="128" style="font: 10px var(--font-sans);" fill="var(--brand)">ISA 决定了有哪些指令</text>
+
+  <!-- Level 2: Instruction Set / Machine Code -->
+  <rect x="40" y="136" width="640" height="64" rx="8" fill="var(--surface)" stroke="var(--chart-series-4)" stroke-width="2"/>
+  <text x="56" y="154" style="font: var(--weight-strong) 13px var(--font-sans);" fill="var(--text)">层 2 · 机器码 / 指令集 (Machine Code)</text>
+  <text x="56" y="170" style="font: 11px var(--font-sans);" fill="var(--text-muted)">CPU 直接执行的二进制数据，是 ISA 在物理层面的具体实现（01 序列）</text>
+  <rect x="56" y="178" width="608" height="14" rx="3" fill="var(--surface-muted)"/>
+  <text x="66" y="189" style="font: 10px var(--font-mono);" fill="var(--text-muted);">10111000 00101010 00000000 00000000  →  MOV EAX, 42 的 x86 机器码</text>
+
+  <!-- Arrow down -->
+  <path d="M 360 202 L 360 214" stroke="var(--text-muted)" stroke-width="1.5" fill="none" stroke-linecap="round" marker-end="url(#ar-muted)"/>
+  <text x="375" y="212" style="font: 10px var(--font-sans);" fill="var(--text-muted)">助记符一一对应</text>
+
+  <!-- Level 3: Assembly Language -->
+  <rect x="40" y="220" width="640" height="72" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+  <text x="56" y="238" style="font: var(--weight-strong) 13px var(--font-sans);" fill="var(--accent-text)">层 3 · 汇编语言 (Assembly Language)</text>
+  <text x="56" y="254" style="font: 11px var(--font-sans);" fill="var(--text-muted)">用人类可读的助记符（mnemonic）替代机器码二进制，每条汇编指令对应一条机器指令</text>
+
+  <!-- Syntax variants for x86 -->
+  <rect x="60" y="262" width="260" height="22" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1"/>
+  <text x="190" y="277" style="font: var(--weight-medium) 11px var(--font-sans);" fill="var(--accent-text)" text-anchor="middle">x86 特有：Intel 语法  ↔  AT&T 语法</text>
+
+  <rect x="330" y="262" width="150" height="22" rx="4" fill="var(--surface-muted)" stroke="var(--border)" stroke-width="1"/>
+  <text x="405" y="277" style="font: 11px var(--font-sans);" fill="var(--text-muted)" text-anchor="middle">ARM / RISC-V 风格统一</text>
+
+  <rect x="490" y="262" width="170" height="22" rx="4" fill="var(--surface-muted)" stroke="var(--border)" stroke-width="1"/>
+  <text x="575" y="277" style="font: 11px var(--font-sans);" fill="var(--text-muted)" text-anchor="middle">MIPS / 其他风格统一</text>
+
+  <!-- Arrow down -->
+  <path d="M 200 286 L 200 298" stroke="var(--accent)" stroke-width="1.5" fill="none" stroke-linecap="round" marker-end="url(#ar-accent)"/>
+  <path d="M 405 294 L 405 298" stroke="var(--text-muted)" stroke-width="1.5" fill="none" stroke-linecap="round" marker-end="url(#ar-muted)"/>
+  <path d="M 575 294 L 575 298" stroke="var(--text-muted)" stroke-width="1.5" fill="none" stroke-linecap="round" marker-end="url(#ar-muted)"/>
+
+  <!-- Level 4: Assemblers -->
+  <rect x="40" y="306" width="640" height="80" rx="8" fill="var(--surface)" stroke="var(--chart-series-3)" stroke-width="2"/>
+  <text x="56" y="324" style="font: var(--weight-strong) 13px var(--font-sans);" fill="var(--text)">层 4 · 汇编器 (Assembler)</text>
+  <text x="56" y="340" style="font: 11px var(--font-sans);" fill="var(--text-muted)">把汇编源代码翻译成机器码的工具。不同汇编器支持不同 ISA、不同语法风格</text>
+
+  <!-- Assembler boxes -->
+  <g>
+    <rect x="56" y="348" width="100" height="28" rx="6" fill="var(--surface-muted)" stroke="var(--chart-series-3)" stroke-width="1.5"/>
+    <text x="106" y="366" style="font: var(--weight-medium) 11px var(--font-mono);" fill="var(--text)" text-anchor="middle">NASM</text>
+    <text x="106" y="378" style="font: 9px var(--font-sans);" fill="var(--text-muted)" text-anchor="middle">x86 / Intel语法</text>
+  </g>
+  <g>
+    <rect x="162" y="348" width="100" height="28" rx="6" fill="var(--surface-muted)" stroke="var(--chart-series-3)" stroke-width="1.5"/>
+    <text x="212" y="366" style="font: var(--weight-medium) 11px var(--font-mono);" fill="var(--text)" text-anchor="middle">MASM</text>
+    <text x="212" y="378" style="font: 9px var(--font-sans);" fill="var(--text-muted)" text-anchor="middle">x86 / Intel语法</text>
+  </g>
+  <g>
+    <rect x="268" y="348" width="100" height="28" rx="6" fill="var(--surface-muted)" stroke="var(--chart-series-3)" stroke-width="1.5"/>
+    <text x="318" y="366" style="font: var(--weight-medium) 11px var(--font-mono);" fill="var(--text)" text-anchor="middle">GAS</text>
+    <text x="318" y="378" style="font: 9px var(--font-sans);" fill="var(--text-muted)" text-anchor="middle">多架构 / AT&T为主</text>
+  </g>
+  <g>
+    <rect x="374" y="348" width="100" height="28" rx="6" fill="var(--surface-muted)" stroke="var(--chart-series-3)" stroke-width="1.5"/>
+    <text x="424" y="366" style="font: var(--weight-medium) 11px var(--font-mono);" fill="var(--text)" text-anchor="middle">FASM</text>
+    <text x="424" y="378" style="font: 9px var(--font-sans);" fill="var(--text-muted)" text-anchor="middle">x86 / Intel语法</text>
+  </g>
+  <g>
+    <rect x="480" y="348" width="90" height="28" rx="6" fill="var(--surface-muted)" stroke="var(--chart-series-3)" stroke-width="1.5"/>
+    <text x="525" y="366" style="font: var(--weight-medium) 11px var(--font-mono);" fill="var(--text)" text-anchor="middle">arm-as</text>
+    <text x="525" y="378" style="font: 9px var(--font-sans);" fill="var(--text-muted)" text-anchor="middle">ARM 专用</text>
+  </g>
+  <g>
+    <rect x="576" y="348" width="90" height="28" rx="6" fill="var(--surface-muted)" stroke="var(--chart-series-3)" stroke-width="1.5"/>
+    <text x="621" y="366" style="font: var(--weight-medium) 11px var(--font-mono);" fill="var(--text)" text-anchor="middle">riscv-gas</text>
+    <text x="621" y="378" style="font: 9px var(--font-sans);" fill="var(--text-muted)" text-anchor="middle">RISC-V 专用</text>
+  </g>
+
+  <!-- Arrow down -->
+  <path d="M 360 390 L 360 402" stroke="var(--chart-series-3)" stroke-width="2" fill="none" stroke-linecap="round" marker-end="url(#ar-brand)"/>
+  <text x="375" y="400" style="font: 10px var(--font-sans);" fill="var(--chart-series-3)">汇编</text>
+
+  <!-- Level 5: Output -->
+  <rect x="40" y="408" width="640" height="60" rx="8" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="2"/>
+  <text x="56" y="426" style="font: var(--weight-strong) 13px var(--font-sans);" fill="var(--brand-text)">层 5 · 目标文件 / 机器码 (Object File)</text>
+  <text x="56" y="442" style="font: 11px var(--font-sans);" fill="var(--text-muted)">汇编器输出 .o / .obj 目标文件，再经链接器(Linker)拼接成可执行文件</text>
+  <text x="56" y="458" style="font: 10px var(--font-mono);" fill="var(--text-muted);">program.o → [链接器 linker] → program.exe</text>
+
+  <!-- Divider -->
+  <line x1="40" y1="490" x2="680" y2="490" stroke="var(--border)" stroke-width="1"/>
+
+  <!-- Side note: Intel vs AT&T syntax -->
+  <text x="360" y="510" style="font: var(--weight-strong) 14px var(--font-sans);" fill="var(--text)" text-anchor="middle">x86 两大汇编风格对比</text>
+
+  <!-- Intel syntax box -->
+  <rect x="50" y="520" width="290" height="100" rx="8" fill="var(--surface)" stroke="var(--brand)" stroke-width="1.5"/>
+  <text x="66" y="538" style="font: var(--weight-strong) 12px var(--font-sans);" fill="var(--brand-text)">Intel 语法</text>
+  <text x="66" y="554" style="font: 11px var(--font-sans);" fill="var(--text-muted)">mov 目标, 源 （目标在前）</text>
+  <text x="66" y="572" style="font: 11px var(--font-mono);" fill="var(--text);">mov eax, 42</text>
+  <text x="66" y="590" style="font: 11px var(--font-mono);" fill="var(--text);">mov rax, [rbx+rsi*4]</text>
+  <text x="66" y="608" style="font: 10px var(--font-sans);" fill="var(--text-muted)">使用者：NASM / MASM / FASM / VS</text>
+
+  <!-- AT&T syntax box -->
+  <rect x="380" y="520" width="290" height="100" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text x="396" y="538" style="font: var(--weight-strong) 12px var(--font-sans);" fill="var(--accent-text)">AT&T 语法</text>
+  <text x="396" y="554" style="font: 11px var(--font-sans);" fill="var(--text-muted)">movl 源, 目标 （源在前，操作数带大小后缀）</text>
+  <text x="396" y="572" style="font: 11px var(--font-mono);" fill="var(--text);">movl $42, %eax</text>
+  <text x="396" y="590" style="font: 11px var(--font-mono);" fill="var(--text);">movq (%rbx,%rsi,4), %rax</text>
+  <text x="396" y="608" style="font: 10px var(--font-sans);" fill="var(--text-muted)">使用者：GAS / GCC 内联汇编 / Linux 内核</text>
+
+</svg>
+</div>
