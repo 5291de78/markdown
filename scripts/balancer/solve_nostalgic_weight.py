@@ -7,7 +7,7 @@ from math import isqrt
 T1 = 0x9E3779B97F4A7C15F39CC0605CEDC8341082276BF3A27251F86C6A11D0C18E95
 T2 = 0x6A09E667BB67AE853C6EF372A54FF53A510E527F9B05688C1F83D9AB5BE0CD19
 WM = 0x3C6EF372FE94F82BE73980C0B9DB906821044ED7E744E4A3F0D8D423A1831D2B
-TAP = (1 << 10) | (1 << 5) | (1 << 2) | 1      # x^256+x^10+x^5+x^2+1
+TAP = (1 << 10) | (1 << 5) | (1 << 2) | 1      # x^256+x^10+x^5+x^2+1 抽头多项式
 REG = (1 << 256) - 1
 MASK = T1 ^ T2 ^ WM   # u⊕v 之后二次项抵消，剩下的线性掩码
 
@@ -16,7 +16,7 @@ def stage0_payload():
     M1 = int('5' * 64, 16)      # 0x5555...  2位字段掩码
     M2 = int('3' * 64, 16)      # 0x3333...  4位字段掩码
     M8 = int('0F' * 32, 16)     # 0x0F0F...  8位字段掩码
-    K8 = int('01' * 32, 16)     # 0x0101...01  32个字节槽求和到顶字节
+    K8 = int('01' * 32, 16)     # 0x0101...01  32个字节槽求和到顶字节host
     return (f"B=A>>1;B=B&{M1};A=A-B;"          # 折叠到 2 位字段（每字段 <=2）
             f"B=A>>2;B=B&{M2};A=A&{M2};A=A+B;" # 折叠到 4 位字段（<=4）
             f"B=A>>4;B=B&{M8};A=A&{M8};A=A+B;" # 折叠到 8 位字段（<=8）
@@ -59,9 +59,11 @@ def inv2(M, mod=256):                       # det 必须为奇
 
 def mm2(A, B):
     return [[(A[i][0] * B[0][j] + A[i][1] * B[1][j]) % 256 for j in (0, 1)] for i in (0, 1)]
+#二阶矩阵在mod256下的计算 <==> A x B
 
 def vm2(r, M):                              # 行向量 × 矩阵
     return [(r[0] * M[0][j] + r[1] * M[1][j]) % 256 for j in (0, 1)]
+#
 
 def stage1(hill_ct):
     X = [(67, 73), (80, 72), (69, 82)]      # "CI" "PH" "ER"
@@ -149,7 +151,7 @@ def stage3(N, e, a_off, shift_bits, c_rsa, seed):
     return None
 
 def main():
-    host, port = "pwn.recruit.yulinsec.cn" , 11009
+    host, port = "127.0.0.1" , 20000
     print('[*] 连接，提交 Stage 0 校准程序 ...')
     N, e, a_off, shift_bits, c_rsa, hill_ct = get_session(host, port)
     print('[+] Stage 0 通过，参数到手')

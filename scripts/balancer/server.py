@@ -197,11 +197,9 @@ def build_session(rng):
     seed = S >> shift_bits  # Top 256 MSBs of (p + q)
 
     c_rsa = pow(int.from_bytes(FLAG.encode(), "big"), e, N)
-'''
-一段字节数据，按**大端序（big-endian）**拼接成一个十进制整数。
-字节从左到右对应整数的高位到低位，和我们日常读写数字的顺序完全一致
-把所有字节的十六进制形式首尾拼接，再转换成十进制数
-'''
+    # 一段字节数据，按大端序（big-endian）拼接成一个十进制整数。
+    # 字节从左到右对应整数的高位到低位，和我们日常读写数字的顺序完全一致
+    # 把所有字节的十六进制形式首尾拼接，再转换成十进制数
     U_bytes, V_bytes = generate_nostalgia_stream(seed, n_bytes=36)
     header = b"CIPHER"
     header_pairs = [
