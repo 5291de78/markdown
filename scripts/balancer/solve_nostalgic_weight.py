@@ -13,11 +13,14 @@ MASK = T1 ^ T2 ^ WM   # u⊕v 之后二次项抵消，剩下的线性掩码
 
 # ===== Stage 0: SWAR popcount，15 步（预算 16）=====
 def stage0_payload():
-    M1 = int('5' * 64, 16)      # 0x5555...  2位字段掩码
+    M1 = int('5' * 64, 16)      # 0x5555...  2位字段掩码 0101 0101 0101
+
     M2 = int('3' * 64, 16)      # 0x3333...  4位字段掩码
     M8 = int('0F' * 32, 16)     # 0x0F0F...  8位字段掩码
+
     K8 = int('01' * 32, 16)     # 0x0101...01  32个字节槽求和到顶字节host
     return (f"B=A>>1;B=B&{M1};A=A-B;"          # 折叠到 2 位字段（每字段 <=2）
+            # 为什么是A = A - B 每两个位有0 ，1 ， 2
             f"B=A>>2;B=B&{M2};A=A&{M2};A=A+B;" # 折叠到 4 位字段（<=4）
             f"B=A>>4;B=B&{M8};A=A&{M8};A=A+B;" # 折叠到 8 位字段（<=8）
             f"A=A*{K8};A=A>>248;")             # 乘法和进顶字节，>>248 取出
@@ -46,6 +49,7 @@ def get_session(host, port):
             break
         data += chunk
     text = data.decode()
+    print(text)
     assert 'calibrated successfully' in text, 'Stage 0 校准失败: ' + text
     grab = lambda k: int(re.search(rf'{k} = (\d+)', text).group(1))
     hill_ct = ast.literal_eval(re.search(r'hill_ct = (\[.*\])', text).group(1))
@@ -115,6 +119,8 @@ def stage2(pairs):
         assert ((m & seed).bit_count() & 1) == bit, 'Stage2 验证失败'
         m = ((m << 1) & REG) ^ (TAP if (m >> 255) & 1 else 0)
     return seed
+
+#seed就是 p + q 的 top256 MSB
 
 # ===== Stage 3: 广义 RSA + 连分数（Legendre）=====
 def convergents(num, den):                  # e/Psi0 的渐近分数 (k, u)
