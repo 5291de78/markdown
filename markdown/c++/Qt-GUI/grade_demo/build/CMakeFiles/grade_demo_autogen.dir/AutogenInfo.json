@@ -11,6 +11,7 @@
 		"C:/Program Files/CMake/share/cmake-4.4/Modules/CMakeDetermineSystem.cmake",
 		"C:/Program Files/CMake/share/cmake-4.4/Modules/CMakeSystem.cmake.in",
 		"C:/Users/wangq/PycharmProjects/YulinSec--WriteUp--2026/markdown/c++/Qt-GUI/grade_demo/build/CMakeFiles/4.4.3/CMakeSystem.cmake",
+		"C:/Program Files/CMake/share/cmake-4.4/Modules/CMakeMinGWFindMake.cmake",
 		"C:/Program Files/CMake/share/cmake-4.4/Modules/CMakeSystemSpecificInitialize.cmake",
 		"C:/Program Files/CMake/share/cmake-4.4/Modules/Platform/Windows-Initialize.cmake",
 		"C:/Program Files/CMake/share/cmake-4.4/Modules/CMakeDetermineCXXCompiler.cmake",
@@ -97,7 +98,6 @@
 		"C:/Program Files/CMake/share/cmake-4.4/Modules/CMakeCXXCompilerABI.cpp",
 		"C:/Program Files/CMake/share/cmake-4.4/Modules/CMakeDetermineCompilerSupport.cmake",
 		"C:/Program Files/CMake/share/cmake-4.4/Modules/Internal/FeatureTesting.cmake",
-		"C:/Program Files/CMake/share/cmake-4.4/Modules/Compiler/GNU-CXX-CXXImportStd.cmake",
 		"C:/Program Files/CMake/share/cmake-4.4/Modules/CMakeCXXCompiler.cmake.in",
 		"C:/Users/wangq/PycharmProjects/YulinSec--WriteUp--2026/markdown/c++/Qt-GUI/grade_demo/build/CMakeFiles/4.4.3/CMakeCXXCompiler.cmake",
 		"C:/Program Files/CMake/share/cmake-4.4/Modules/Platform/Windows-GNU-CXX-ABI.cmake",
@@ -419,7 +419,7 @@
 	"MOC_PATH_PREFIX" : false,
 	"MOC_PREDEFS_CMD" : 
 	[
-		"C:/msys64/ucrt64/bin/g++.exe",
+		"C:/msys64/ucrt64/bin/c++.exe",
 		"-std=gnu++17",
 		"-w",
 		"-dM",

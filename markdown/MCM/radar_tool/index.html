@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>雷达波形交互补偿工具</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #eef2f7;
+      --panel: #ffffff;
+      --text: #172033;
+      --muted: #64748b;
+      --line: #dbe3ee;
+      --primary: #2563eb;
+      --accent: #e11d48;
+      --shadow: 0 8px 28px rgba(30, 41, 59, 0.07);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+    }
+    header {
+      padding: 24px 30px 20px;
+      color: white;
+      background: linear-gradient(120deg, #172554, #1d4ed8);
+    }
+    header h1 { margin: 0 0 7px; font-size: 25px; font-weight: 650; }
+    header p { margin: 0; color: #dbeafe; font-size: 14px; }
+    main { max-width: 1500px; margin: 22px auto 36px; padding: 0 22px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid rgba(219, 227, 238, 0.85);
+      border-radius: 13px;
+      box-shadow: var(--shadow);
+    }
+    .controls { padding: 18px 20px; }
+    .control-grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 2fr) repeat(3, minmax(155px, 1fr));
+      gap: 14px;
+    }
+    label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; }
+    select, input[type="number"], button {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      background: white;
+      color: var(--text);
+      font: inherit;
+      font-size: 13px;
+    }
+    select, input[type="number"] { padding: 7px 9px; }
+    select:focus, input:focus { outline: 2px solid #bfdbfe; border-color: var(--primary); }
+    button { padding: 8px 15px; cursor: pointer; font-weight: 600; }
+    button:hover { background: #f1f5f9; }
+    button.primary { color: white; border-color: var(--primary); background: var(--primary); }
+    button.primary:hover { background: #1d4ed8; }
+    .compensation-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    .compensation-head { display: flex; align-items: center; justify-content: space-between; }
+    .compensation-head label { margin: 0; font-size: 15px; }
+    .value-badge { color: var(--primary); font-size: 14px; font-weight: 700; }
+    .slider-row { display: grid; grid-template-columns: 1fr 105px; gap: 12px; align-items: center; }
+    input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; }
+    .range-limits { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+    .window-row {
+      display: grid;
+      grid-template-columns: 150px 150px 130px 1fr;
+      gap: 12px;
+      align-items: end;
+      margin-top: 18px;
+    }
+    .hint { align-self: center; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    #status { min-height: 24px; margin-top: 12px; color: var(--muted); font-size: 13px; }
+    #status.error { color: #b91c1c; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 15px 0; }
+    .stat { padding: 12px 16px; }
+    .stat .name { color: var(--muted); font-size: 12px; }
+    .stat .value { margin-top: 4px; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .chart-panel { margin-top: 15px; padding: 15px 16px 10px; }
+    .chart-panel h2 { margin: 0 0 3px; font-size: 16px; font-weight: 650; }
+    .chart-panel p { margin: 0 0 4px; color: var(--muted); font-size: 12px; }
+    canvas { display: block; width: 100%; height: 320px; }
+    footer { margin-top: 17px; color: var(--muted); font-size: 12px; line-height: 1.8; text-align: center; }
+    code { padding: 2px 5px; border-radius: 4px; background: #e2e8f0; }
+    @media (max-width: 950px) {
+      .control-grid { grid-template-columns: 1fr 1fr; }
+      .compensation-grid { grid-template-columns: 1fr; }
+      .window-row { grid-template-columns: 1fr 1fr; }
+      .stats { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      main { padding: 0 10px; }
+      header { padding: 20px; }
+      .control-grid, .window-row { grid-template-columns: 1fr; }
+      canvas { height: 270px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>雷达波形交互补偿工具</h1>
+    <p>本地读取实验数据 · 63 路接收通道 · 采样率 4 GHz · 相位与强度实时补偿</p>
+  </header>
+  <main>
+    <section class="panel controls">
+      <div class="control-grid">
+        <div>
+          <label for="groupSelect">数据组</label>
+          <select id="groupSelect" aria-label="数据组"></select>
+        </div>
+        <div>
+          <label for="packetSelect">数据包</label>
+          <select id="packetSelect" aria-label="数据包"></select>
+        </div>
+        <div>
+          <label for="channelSelect">接收通道</label>
+          <select id="channelSelect" aria-label="接收通道"></select>
+        </div>
+        <div>
+          <label for="modeSelect">波形来源</label>
+          <select id="modeSelect" aria-label="波形来源">
+            <option value="average">四段周期平均（4000 点）</option>
+            <option value="raw">原始记录（16000 点）</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="compensation-grid">
+        <div>
+          <div class="compensation-head">
+            <label for="phaseSlider">相位补偿</label>
+            <span class="value-badge" id="phaseBadge">0.0°</span>
+          </div>
+          <div class="slider-row">
+            <input id="phaseSlider" type="range" min="-180" max="180" step="0.1" value="0">
+            <input id="phaseNumber" type="number" min="-180" max="180" step="0.1" value="0" aria-label="相位补偿数值，单位度">
+          </div>
+          <div class="range-limits"><span>−180°</span><span>0°</span><span>+180°</span></div>
+        </div>
+        <div>
+          <div class="compensation-head">
+            <label for="gainSlider">强度补偿</label>
+            <span class="value-badge" id="gainBadge">0.0 dB</span>
+          </div>
+          <div class="slider-row">
+            <input id="gainSlider" type="range" min="-30" max="30" step="0.1" value="0">
+            <input id="gainNumber" type="number" min="-30" max="30" step="0.1" value="0" aria-label="强度补偿数值，单位dB">
+          </div>
+          <div class="range-limits"><span>−30 dB</span><span>0 dB</span><span>+30 dB</span></div>
+        </div>
+      </div>
+
+      <div class="window-row">
+        <div>
+          <label for="startInput">显示起点（采样点）</label>
+          <input id="startInput" type="number" min="0" step="1" value="0">
+        </div>
+        <div>
+          <label for="endInput">显示终点（采样点）</label>
+          <input id="endInput" type="number" min="1" step="1" value="4000">
+        </div>
+        <button id="applyRange" class="primary">应用显示区间</button>
+        <div class="hint">相位和强度拖动后自动更新；区间用于放大局部波形。<br><button id="resetButton" style="width:auto;min-height:30px;margin-top:4px">重置补偿参数</button></div>
+      </div>
+      <div id="status" role="status" aria-live="polite">正在读取数据组列表…</div>
+    </section>
+
+    <section class="stats">
+      <div class="panel stat"><div class="name">线性幅度倍数</div><div class="value" id="gainLinear">1.000×</div></div>
+      <div class="panel stat"><div class="name">原始波形 RMS</div><div class="value" id="rmsOriginal">—</div></div>
+      <div class="panel stat"><div class="name">补偿波形 RMS</div><div class="value" id="rmsCompensated">—</div></div>
+      <div class="panel stat"><div class="name">当前显示</div><div class="value" id="displayInfo">—</div></div>
+    </section>
+
+    <section class="panel chart-panel">
+      <h2>时域波形</h2>
+      <p>灰色为原始信号，红色为补偿后的实值波形；横轴为采样时间。</p>
+      <canvas id="timeChart" aria-label="原始与补偿后的时域波形图"></canvas>
+    </section>
+
+    <section class="panel chart-panel">
+      <h2>幅度频谱</h2>
+      <p>以原始信号的最大频谱幅度为 0 dB，因此强度补偿会表现为整条曲线上下移动。</p>
+      <canvas id="magnitudeChart" aria-label="原始与补偿后的幅度频谱图"></canvas>
+    </section>
+
+    <section class="panel chart-panel">
+      <h2>相位频谱（数字工作频带）</h2>
+      <p>显示 0.3～1.7 GHz 内的相位；低幅度频率处的相位可能快速跳变。</p>
+      <canvas id="phaseChart" aria-label="原始与补偿后的相位频谱图"></canvas>
+    </section>
+
+    <footer>
+      补偿定义：对解析信号 z(t) 乘以 <code>10^(gainDb/20) · exp(j·phase)</code>，再取实部作为补偿波形。<br>
+      相位补偿不是时间平移；若需要校准通道时延，应另外施加随频率线性变化的相位。
+    </footer>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const state = {
+      packet: 0,
+      channel: 0,
+      mode: "average",
+      phase: 0,
+      gain: 0,
+      data: null,
+      timer: null,
+      requestId: 0,
+      metaId: 0
+    };
+
+    function setStatus(message, error = false) {
+      $("status").textContent = message;
+      $("status").classList.toggle("error", error);
+    }
+
+    async function api(path, params = {}) {
+      const query = new URLSearchParams(params);
+      const response = await fetch(`${path}?${query}`);
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || `请求失败 (${response.status})`);
+      return payload;
+    }
+
+    function fillSelect(select, items, valueKey, labelKey) {
+      select.replaceChildren();
+      for (const item of items) {
+        const option = document.createElement("option");
+        option.value = item[valueKey];
+        option.textContent = item[labelKey];
+        select.append(option);
+      }
+    }
+
+    async function initialize() {
+      try {
+        const payload = await api("/api/groups");
+        fillSelect($("groupSelect"), payload.groups, "id", "label");
+        $("groupSelect").value = payload.defaultGroup;
+        await loadMeta();
+      } catch (error) {
+        setStatus(error.message, true);
+      }
+    }
+
+    async function loadMeta() {
+      const id = ++state.metaId;
+      setStatus("正在读取数据组信息…");
+      try {
+        const meta = await api("/api/meta", { group: $("groupSelect").value });
+        if (id !== state.metaId) return;
+        fillSelect($("packetSelect"), meta.packets.map((packet) => ({
+          value: packet.index,
+          label: `数据包 ${packet.index + 1}（设备编号 ${packet.count}）`
+        })), "value", "label");
+        fillSelect($("channelSelect"), meta.channels, "index", "label");
+        $("packetSelect").value = "0";
+        $("channelSelect").value = String(Math.min(state.channel, 62));
+        state.packet = 0;
+        setDisplayRangeForMode();
+        await loadWaveform();
+      } catch (error) {
+        setStatus(error.message, true);
+      }
+    }
+
+    function setDisplayRangeForMode() {
+      state.mode = $("modeSelect").value;
+      $("startInput").value = "0";
+      $("endInput").value = state.mode === "average" ? "4000" : "16000";
+    }
+
+    function scheduleWaveform(delay = 55) {
+      clearTimeout(state.timer);
+      state.timer = setTimeout(loadWaveform, delay);
+    }
+
+    async function loadWaveform() {
+      const start = Number($("startInput").value);
+      const end = Number($("endInput").value);
+      const maximum = $("modeSelect").value === "average" ? 4000 : 16000;
+      if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end > maximum || start >= end) {
+        setStatus(`显示区间必须满足 0 ≤ 起点 < 终点 ≤ ${maximum}`, true);
+        return;
+      }
+      const id = ++state.requestId;
+      setStatus("正在计算补偿波形…");
+      try {
+        const payload = await api("/api/waveform", {
+          group: $("groupSelect").value,
+          packet: $("packetSelect").value || "0",
+          channel: $("channelSelect").value || "0",
+          mode: $("modeSelect").value,
+          phase: state.phase,
+          gain: state.gain,
+          start,
+          end
+        });
+        if (id !== state.requestId) return;
+        state.data = payload;
+        updateStats();
+        drawAll();
+        setStatus(`${payload.group} · ${payload.channelLabel} · 已更新 ${payload.original.length} 个显示点`);
+      } catch (error) {
+        if (id === state.requestId) setStatus(error.message, true);
+      }
+    }
+
+    function updateStats() {
+      const data = state.data;
+      $("gainLinear").textContent = `${data.gainLinear.toFixed(4)}×`;
+      $("rmsOriginal").textContent = data.rmsOriginal.toFixed(2);
+      $("rmsCompensated").textContent = data.rmsCompensated.toFixed(2);
+      $("displayInfo").textContent = `${data.start}～${data.end}`;
+    }
+
+    function updateBadges() {
+      $("phaseBadge").textContent = `${state.phase.toFixed(1)}°`;
+      $("gainBadge").textContent = `${state.gain.toFixed(1)} dB`;
+      const linear = 10 ** (state.gain / 20);
+      $("gainLinear").textContent = `${linear.toFixed(4)}×`;
+    }
+
+    function bindParameter(name, sliderId, numberId, minimum, maximum) {
+      const slider = $(sliderId);
+      const number = $(numberId);
+      const apply = (raw) => {
+        const parsed = Number(raw);
+        if (!Number.isFinite(parsed)) return;
+        const value = Math.max(minimum, Math.min(maximum, parsed));
+        state[name] = value;
+        slider.value = String(value);
+        number.value = String(value);
+        updateBadges();
+        scheduleWaveform();
+      };
+      slider.addEventListener("input", () => apply(slider.value));
+      number.addEventListener("input", () => {
+        if (number.value !== "" && Number.isFinite(Number(number.value))) apply(number.value);
+      });
+      number.addEventListener("change", () => apply(number.value));
+    }
+
+    function formatTick(value) {
+      const absolute = Math.abs(value);
+      if (absolute >= 10000) return value.toExponential(1);
+      if (absolute >= 100) return value.toFixed(0);
+      if (absolute >= 10) return value.toFixed(1);
+      if (absolute >= 1) return value.toFixed(2);
+      return value.toFixed(3);
+    }
+
+    function drawChart(canvas, config) {
+      const rect = canvas.getBoundingClientRect();
+      const width = Math.max(300, rect.width);
+      const height = Math.max(220, rect.height);
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, width, height);
+      ctx.font = '12px "Microsoft YaHei", sans-serif';
+
+      const margin = { left: 67, right: 20, top: 42, bottom: 52 };
+      const plotWidth = width - margin.left - margin.right;
+      const plotHeight = height - margin.top - margin.bottom;
+      const xMin = config.xMin;
+      const xMax = config.xMax > config.xMin ? config.xMax : config.xMin + 1;
+      let yMin = Infinity;
+      let yMax = -Infinity;
+      for (const series of config.series) {
+        for (const value of series.y) {
+          if (Number.isFinite(value)) {
+            yMin = Math.min(yMin, value);
+            yMax = Math.max(yMax, value);
+          }
+        }
+      }
+      if (config.yMin !== undefined) yMin = config.yMin;
+      if (config.yMax !== undefined) yMax = config.yMax;
+      if (!Number.isFinite(yMin) || !Number.isFinite(yMax)) {
+        yMin = -1;
+        yMax = 1;
+      }
+      if (config.includeZero) {
+        yMin = Math.min(yMin, 0);
+        yMax = Math.max(yMax, 0);
+      }
+      if (config.padding !== 0) {
+        const padding = Math.max((yMax - yMin) * 0.09, Math.abs(yMax) * 0.01, 1e-6);
+        if (config.yMin === undefined) yMin -= padding;
+        if (config.yMax === undefined) yMax += padding;
+      }
+      if (yMax <= yMin) yMax = yMin + 1;
+
+      const sx = (value) => margin.left + (value - xMin) / (xMax - xMin) * plotWidth;
+      const sy = (value) => margin.top + (yMax - value) / (yMax - yMin) * plotHeight;
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(margin.left, margin.top, plotWidth, plotHeight);
+      ctx.strokeStyle = "#e7edf4";
+      ctx.fillStyle = "#64748b";
+      ctx.lineWidth = 1;
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      for (let index = 0; index <= 5; index++) {
+        const value = yMin + (yMax - yMin) * index / 5;
+        const y = sy(value);
+        ctx.beginPath();
+        ctx.moveTo(margin.left, y);
+        ctx.lineTo(width - margin.right, y);
+        ctx.stroke();
+        ctx.fillText(formatTick(value), margin.left - 9, y);
+      }
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      for (let index = 0; index <= 6; index++) {
+        const value = xMin + (xMax - xMin) * index / 6;
+        const x = sx(value);
+        ctx.beginPath();
+        ctx.moveTo(x, margin.top);
+        ctx.lineTo(x, height - margin.bottom);
+        ctx.stroke();
+        ctx.fillText(formatTick(value), x, height - margin.bottom + 9);
+      }
+      ctx.strokeStyle = "#94a3b8";
+      ctx.strokeRect(margin.left, margin.top, plotWidth, plotHeight);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(margin.left, margin.top, plotWidth, plotHeight);
+      ctx.clip();
+      for (const series of config.series) {
+        ctx.strokeStyle = series.color;
+        ctx.lineWidth = series.width || 1.5;
+        ctx.beginPath();
+        let started = false;
+        for (let index = 0; index < series.x.length; index++) {
+          const xValue = series.x[index];
+          const yValue = series.y[index];
+          if (!Number.isFinite(xValue) || !Number.isFinite(yValue)) continue;
+          const x = sx(xValue);
+          const y = sy(yValue);
+          if (!started) {
+            ctx.moveTo(x, y);
+            started = true;
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      let legendX = margin.left + 7;
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "left";
+      for (const series of config.series) {
+        ctx.strokeStyle = series.color;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(legendX, 20);
+        ctx.lineTo(legendX + 25, 20);
+        ctx.stroke();
+        ctx.fillStyle = "#334155";
+        ctx.fillText(series.name, legendX + 32, 20);
+        legendX += 45 + ctx.measureText(series.name).width;
+      }
+      ctx.fillStyle = "#475569";
+      ctx.textAlign = "center";
+      ctx.fillText(config.xLabel, margin.left + plotWidth / 2, height - 17);
+      ctx.save();
+      ctx.translate(16, margin.top + plotHeight / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText(config.yLabel, 0, 0);
+      ctx.restore();
+    }
+
+    function drawAll() {
+      const data = state.data;
+      if (!data) return;
+      const time = data.indices.map((index) => index * 1e9 / data.sampleRate);
+      drawChart($("timeChart"), {
+        series: [
+          { name: "原始波形", color: "#64748b", x: time, y: data.original, width: 1.3 },
+          { name: "补偿波形", color: "#e11d48", x: time, y: data.compensated, width: 1.5 }
+        ],
+        xMin: time[0],
+        xMax: time[time.length - 1],
+        xLabel: "时间 / ns",
+        yLabel: "采样幅度",
+        includeZero: true
+      });
+      const spectrum = data.spectrum;
+      drawChart($("magnitudeChart"), {
+        series: [
+          { name: "原始幅度谱", color: "#64748b", x: spectrum.frequencyGHz, y: spectrum.originalDb },
+          { name: "补偿幅度谱", color: "#2563eb", x: spectrum.frequencyGHz, y: spectrum.compensatedDb }
+        ],
+        xMin: 0,
+        xMax: 2,
+        yMin: -100,
+        xLabel: "数字频率 / GHz",
+        yLabel: "相对幅度 / dB",
+        padding: 0
+      });
+      const bandIndices = spectrum.frequencyGHz.map((frequency, index) => ({ frequency, index }))
+        .filter((item) => item.frequency >= 0.3 && item.frequency <= 1.7)
+        .map((item) => item.index);
+      const bandFrequency = bandIndices.map((index) => spectrum.frequencyGHz[index]);
+      drawChart($("phaseChart"), {
+        series: [
+          { name: "原始相位", color: "#64748b", x: bandFrequency, y: bandIndices.map((index) => spectrum.originalPhaseDeg[index]) },
+          { name: "补偿相位", color: "#7c3aed", x: bandFrequency, y: bandIndices.map((index) => spectrum.compensatedPhaseDeg[index]) }
+        ],
+        xMin: 0.3,
+        xMax: 1.7,
+        yMin: -180,
+        yMax: 180,
+        xLabel: "数字频率 / GHz",
+        yLabel: "相位 / °",
+        padding: 0
+      });
+    }
+
+    $("groupSelect").addEventListener("change", loadMeta);
+    $("packetSelect").addEventListener("change", () => {
+      state.packet = Number($("packetSelect").value);
+      scheduleWaveform(0);
+    });
+    $("channelSelect").addEventListener("change", () => {
+      state.channel = Number($("channelSelect").value);
+      scheduleWaveform(0);
+    });
+    $("modeSelect").addEventListener("change", () => {
+      setDisplayRangeForMode();
+      scheduleWaveform(0);
+    });
+    $("applyRange").addEventListener("click", () => scheduleWaveform(0));
+    $("startInput").addEventListener("change", () => scheduleWaveform(0));
+    $("endInput").addEventListener("change", () => scheduleWaveform(0));
+    $("resetButton").addEventListener("click", () => {
+      state.phase = 0;
+      state.gain = 0;
+      $("phaseSlider").value = "0";
+      $("phaseNumber").value = "0";
+      $("gainSlider").value = "0";
+      $("gainNumber").value = "0";
+      updateBadges();
+      scheduleWaveform(0);
+    });
+    bindParameter("phase", "phaseSlider", "phaseNumber", -180, 180);
+    bindParameter("gain", "gainSlider", "gainNumber", -30, 30);
+    new ResizeObserver(drawAll).observe(document.body);
+    initialize();
+  </script>
+</body>
+</html>

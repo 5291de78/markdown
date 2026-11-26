@@ -1,9 +1,0 @@
-# ninja log v7
-10	577	8167125649275660	grade_demo_autogen/timestamp	9e4c19bfac7cf08e
-10	577	8167125649275660	grade_demo_autogen/mocs_compilation.cpp	9e4c19bfac7cf08e
-10	577	8167125649275660	C:/Users/wangq/PycharmProjects/YulinSec--WriteUp--2026/markdown/c++/Qt-GUI/grade_demo/build/grade_demo_autogen/timestamp	9e4c19bfac7cf08e
-10	577	8167125649275660	C:/Users/wangq/PycharmProjects/YulinSec--WriteUp--2026/markdown/c++/Qt-GUI/grade_demo/build/grade_demo_autogen/mocs_compilation.cpp	9e4c19bfac7cf08e
-583	1784	8167125649666441	CMakeFiles/grade_demo.dir/grade_demo_autogen/mocs_compilation.cpp.obj	e626f48c2161d20b
-589	1788	8167125649726437	CMakeFiles/grade_demo.dir/main.cpp.obj	7e4c4db424529ceb
-595	1890	8167125649786605	CMakeFiles/grade_demo.dir/mainwindow.cpp.obj	e08b6e76c7ab0a07
-1891	2057	8167125662749055	grade_demo.exe	990c9b69b032b649

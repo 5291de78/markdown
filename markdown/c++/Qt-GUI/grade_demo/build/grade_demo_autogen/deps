@@ -17,6 +17,7 @@ grade_demo_autogen/timestamp: \
 	C:/Program\ Files/CMake/share/cmake-4.4/Modules/CMakeGenericSystem.cmake \
 	C:/Program\ Files/CMake/share/cmake-4.4/Modules/CMakeInitializeConfigs.cmake \
 	C:/Program\ Files/CMake/share/cmake-4.4/Modules/CMakeLanguageInformation.cmake \
+	C:/Program\ Files/CMake/share/cmake-4.4/Modules/CMakeMinGWFindMake.cmake \
 	C:/Program\ Files/CMake/share/cmake-4.4/Modules/CMakeParseImplicitIncludeInfo.cmake \
 	C:/Program\ Files/CMake/share/cmake-4.4/Modules/CMakeParseImplicitLinkInfo.cmake \
 	C:/Program\ Files/CMake/share/cmake-4.4/Modules/CMakeParseLibraryArchitecture.cmake \
@@ -48,7 +49,6 @@ grade_demo_autogen/timestamp: \
 	C:/Program\ Files/CMake/share/cmake-4.4/Modules/Compiler/Fujitsu-DetermineCompiler.cmake \
 	C:/Program\ Files/CMake/share/cmake-4.4/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake \
 	C:/Program\ Files/CMake/share/cmake-4.4/Modules/Compiler/GHS-DetermineCompiler.cmake \
-	C:/Program\ Files/CMake/share/cmake-4.4/Modules/Compiler/GNU-CXX-CXXImportStd.cmake \
 	C:/Program\ Files/CMake/share/cmake-4.4/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake \
 	C:/Program\ Files/CMake/share/cmake-4.4/Modules/Compiler/GNU-CXX.cmake \
 	C:/Program\ Files/CMake/share/cmake-4.4/Modules/Compiler/GNU-FindBinUtils.cmake \

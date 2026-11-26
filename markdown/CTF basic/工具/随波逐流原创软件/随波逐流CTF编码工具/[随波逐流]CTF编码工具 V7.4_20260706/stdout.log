@@ -1,6 +1,0 @@
-java Extract [Options] "image.jpg"
-Options:
-	-p password (default: abc123)
-	-e extractedFileName (default: output.txt)
-
-Author: Andreas Westfeld, westfeld@inf.tu-dresden.de
