@@ -1,0 +1,95 @@
+{
+  "reference_channel": 36,
+  "direct_halfwidth_samples": 5,
+  "fit_halfwidth_samples": 3,
+  "range_grid_m": [
+    0.3,
+    1.4,
+    0.001
+  ],
+  "upsample_factor": 4,
+  "selection_on_calibration_groups": {
+    "wall": {
+      "coherent": {
+        "count": 10,
+        "mae_cm": 37.678332873615304,
+        "rmse_cm": 43.761834862317045,
+        "max_absolute_error_cm": 81.49853857421783,
+        "bias_cm": -2.842170943040401e-15,
+        "estimated_range_bias_cm": -26.49220307129382
+      },
+      "incoherent": {
+        "count": 10,
+        "mae_cm": 0.7188697856081033,
+        "rmse_cm": 0.8673507297683528,
+        "max_absolute_error_cm": 1.6122940661002616,
+        "bias_cm": 1.6653345369377348e-15,
+        "estimated_range_bias_cm": 4.978595883455966
+      }
+    },
+    "metal": {
+      "coherent": {
+        "count": 10,
+        "mae_cm": 29.912198245088348,
+        "rmse_cm": 33.37964032522065,
+        "max_absolute_error_cm": 58.28124221797468,
+        "bias_cm": -1.7763568394002505e-15,
+        "estimated_range_bias_cm": -5.526674480929252
+      },
+      "incoherent": {
+        "count": 10,
+        "mae_cm": 0.718617799821264,
+        "rmse_cm": 0.957742025229071,
+        "max_absolute_error_cm": 2.005536419492848,
+        "bias_cm": -2.220446049250313e-15,
+        "estimated_range_bias_cm": 9.282943982050638
+      }
+    }
+  },
+  "evaluation": {
+    "wall": {
+      "selected_method": "incoherent",
+      "range_bias_cm": 4.978595883455966,
+      "calibration": {
+        "count": 10,
+        "mae_cm": 0.7188697856081033,
+        "rmse_cm": 0.8673507297683528,
+        "max_absolute_error_cm": 1.6122940661002616,
+        "bias_cm": 1.6653345369377348e-15,
+        "mean_direct_suppression_db": 6.924353214848199,
+        "mean_target_preservation_db": 0.0001624169477636092
+      },
+      "test": {
+        "count": 10,
+        "mae_cm": 0.7936039460465,
+        "rmse_cm": 0.9486315190219353,
+        "max_absolute_error_cm": 1.710937140716795,
+        "bias_cm": -0.7329066192587402,
+        "mean_direct_suppression_db": 6.900770801605061,
+        "mean_target_preservation_db": -0.00012072144242015613
+      }
+    },
+    "metal": {
+      "selected_method": "incoherent",
+      "range_bias_cm": 9.282943982050638,
+      "calibration": {
+        "count": 10,
+        "mae_cm": 0.718617799821264,
+        "rmse_cm": 0.957742025229071,
+        "max_absolute_error_cm": 2.005536419492848,
+        "bias_cm": -2.220446049250313e-15,
+        "mean_direct_suppression_db": 4.216889500591195,
+        "mean_target_preservation_db": 0.0002396601736178514
+      },
+      "test": {
+        "count": 10,
+        "mae_cm": 0.4597998022683846,
+        "rmse_cm": 0.6208879696143376,
+        "max_absolute_error_cm": 1.301538001096647,
+        "bias_cm": 0.04030815944152333,
+        "mean_direct_suppression_db": 3.692063155490002,
+        "mean_target_preservation_db": 3.0614249273490963e-05
+      }
+    }
+  }
+}
