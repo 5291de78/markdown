@@ -1,0 +1,3 @@
+﻿target,voxel_count,energy,center_x_cm,center_y_cm,center_z_cm,peak_x_cm,peak_y_cm,peak_z_cm,bbox_min_x_cm,bbox_min_y_cm,bbox_min_z_cm,bbox_max_x_cm,bbox_max_y_cm,bbox_max_z_cm
+metal_cylinder,1970,7.26452229922787e+23,8.62090277238021,181.04656258327157,66.19821940275462,2.0,184.0,72.0,0.0,164.0,44.0,26.0,194.0,80.0
+metal_shovel,203,6.101391931989707e+22,113.48842408211344,122.97096538852888,55.96002165034799,110.0,126.0,56.0,102.0,116.0,50.0,124.0,130.0,64.0

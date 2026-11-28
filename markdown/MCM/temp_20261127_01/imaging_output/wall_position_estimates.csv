@@ -1,0 +1,3 @@
+﻿wall,y_peak_cm,x_min_cm,x_max_cm,z_min_cm,z_max_cm,profile_strength,interface_y_cm,outer_surface_separation_cm
+wall_A,182.0,-20.0,140.0,26.0,80.0,8.131490838176973e+23,192.75,46.0
+wall_B,228.0,-20.0,140.0,40.0,80.0,7.302432859607604e+23,192.75,46.0

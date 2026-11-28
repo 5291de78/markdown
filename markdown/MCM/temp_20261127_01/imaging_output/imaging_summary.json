@@ -1,0 +1,62 @@
+{
+  "wall": [
+    {
+      "wall": "wall_A",
+      "y_peak_cm": 182.0,
+      "x_min_cm": -20.0,
+      "x_max_cm": 140.0,
+      "z_min_cm": 26.0,
+      "z_max_cm": 80.0,
+      "profile_strength": 8.131490838176973e+23,
+      "interface_y_cm": 192.75,
+      "outer_surface_separation_cm": 46.0
+    },
+    {
+      "wall": "wall_B",
+      "y_peak_cm": 228.0,
+      "x_min_cm": -20.0,
+      "x_max_cm": 140.0,
+      "z_min_cm": 40.0,
+      "z_max_cm": 80.0,
+      "profile_strength": 7.302432859607604e+23,
+      "interface_y_cm": 192.75,
+      "outer_surface_separation_cm": 46.0
+    }
+  ],
+  "metal": [
+    {
+      "target": "metal_cylinder",
+      "voxel_count": 1970,
+      "energy": 7.26452229922787e+23,
+      "center_x_cm": 8.62090277238021,
+      "center_y_cm": 181.04656258327157,
+      "center_z_cm": 66.19821940275462,
+      "peak_x_cm": 2.0,
+      "peak_y_cm": 184.0,
+      "peak_z_cm": 72.0,
+      "bbox_min_x_cm": 0.0,
+      "bbox_min_y_cm": 164.0,
+      "bbox_min_z_cm": 44.0,
+      "bbox_max_x_cm": 26.0,
+      "bbox_max_y_cm": 194.0,
+      "bbox_max_z_cm": 80.0
+    },
+    {
+      "target": "metal_shovel",
+      "voxel_count": 203,
+      "energy": 6.101391931989707e+22,
+      "center_x_cm": 113.48842408211344,
+      "center_y_cm": 122.97096538852888,
+      "center_z_cm": 55.96002165034799,
+      "peak_x_cm": 110.0,
+      "peak_y_cm": 126.0,
+      "peak_z_cm": 56.0,
+      "bbox_min_x_cm": 102.0,
+      "bbox_min_y_cm": 116.0,
+      "bbox_min_z_cm": 50.0,
+      "bbox_max_x_cm": 124.0,
+      "bbox_max_y_cm": 130.0,
+      "bbox_max_z_cm": 64.0
+    }
+  ]
+}
